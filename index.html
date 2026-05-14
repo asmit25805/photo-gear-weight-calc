@@ -1,0 +1,525 @@
+Here's the complete, single-file HTML for the Photo Gear Weight Calculator:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Free online tool to calculate the total weight of your photography gear for travel or outdoor shoots. Perfect for professional photographers.">
+    <title>Photo Gear Weight Calculator | Plan Your Photography Kit</title>
+    <style>
+        :root {
+            --primary: #4a6fa5;
+            --primary-dark: #3a5a8a;
+            --secondary: #f8f9fa;
+            --text: #333;
+            --text-light: #666;
+            --bg: #fff;
+            --border: #ddd;
+            --shadow: rgba(0,0,0,0.1);
+            --success: #28a745;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --primary: #5d8acd;
+                --primary-dark: #4a6fa5;
+                --secondary: #2d3748;
+                --text: #f8f9fa;
+                --text-light: #adb5bd;
+                --bg: #1a202c;
+                --border: #4a5568;
+                --shadow: rgba(0,0,0,0.3);
+                --success: #48bb78;
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background-color: var(--bg);
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            transition: all 0.3s ease;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        h1 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 2.2rem;
+        }
+
+        .subtitle {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .card {
+            background-color: var(--secondary);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px var(--shadow);
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            background-color: var(--bg);
+            color: var(--text);
+            font-size: 16px;
+        }
+
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-add {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .btn-remove {
+            background-color: #dc3545;
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+
+        .btn-remove:hover {
+            background-color: #c82333;
+        }
+
+        .total-weight {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--success);
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .unit-toggle {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .unit-toggle button {
+            background-color: transparent;
+            color: var(--text);
+            border: 1px solid var(--border);
+            padding: 5px 15px;
+        }
+
+        .unit-toggle button.active {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background-color: var(--primary);
+            color: white;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        th:hover {
+            background-color: var(--primary-dark);
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(0,0,0,0.05);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            tr:nth-child(even) {
+                background-color: rgba(255,255,255,0.05);
+            }
+        }
+
+        .empty-message {
+            text-align: center;
+            color: var(--text-light);
+            padding: 20px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            th, td {
+                padding: 8px 10px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ADSENSE_PLACEHOLDER -->
+
+    <header>
+        <h1>Photo Gear Weight Calculator</h1>
+        <p class="subtitle">Plan your photography kit by calculating the total weight of your equipment for travel or outdoor shoots</p>
+    </header>
+
+    <div class="unit-toggle">
+        <button id="toggle-kg" class="active">Kilograms (kg)</button>
+        <button id="toggle-lb">Pounds (lb)</button>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <h2>Add Gear</h2>
+            <div class="form-group">
+                <label for="gear-category">Category</label>
+                <select id="gear-category">
+                    <option value="">Select a category</option>
+                    <option value="Camera">Camera</option>
+                    <option value="Lens">Lens</option>
+                    <option value="Tripod">Tripod</option>
+                    <option value="Lighting">Lighting</option>
+                    <option value="Accessory">Accessory</option>
+                    <option value="Bag">Bag</option>
+                    <option value="Drone">Drone</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="gear-item">Item</label>
+                <select id="gear-item" disabled>
+                    <option value="">Select a category first</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="custom-item">Or enter custom item</label>
+                <input type="text" id="custom-item" placeholder="e.g. Camera strap">
+            </div>
+
+            <div class="form-group">
+                <label for="item-weight">Weight</label>
+                <input type="number" id="item-weight" placeholder="0.00" step="0.01" min="0">
+            </div>
+
+            <div class="form-group">
+                <label for="item-qty">Quantity</label>
+                <input type="number" id="item-qty" value="1" min="1">
+            </div>
+
+            <button id="add-item" class="btn-add">Add to Kit</button>
+        </div>
+
+        <div class="card">
+            <h2>Your Photography Kit</h2>
+            <div id="total-weight" class="total-weight">Total: 0.00 kg</div>
+            
+            <div id="gear-list-container">
+                <table id="gear-list">
+                    <thead>
+                        <tr>
+                            <th data-sort="name">Item ▼</th>
+                            <th data-sort="category">Category</th>
+                            <th data-sort="weight">Weight</th>
+                            <th data-sort="qty">Qty</th>
+                            <th data-sort="total">Total</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="gear-items">
+                        <tr class="empty-message">
+                            <td colspan="6">Your kit is empty. Add some gear to get started!</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        Free tool by <a href="https://minagents.app" target="_blank">MiniAgents.app</a>
+    </footer>
+
+    <script>
+        // Gear database
+        const gearDatabase = {
+            'Camera': [
+                { name: 'Sony A7 IV', weight: 0.658 },
+                { name: 'Canon EOS R5', weight: 0.738 },
+                { name: 'Nikon Z7 II', weight: 0.705 },
+                { name: 'Fujifilm X-T4', weight: 0.607 },
+                { name: 'Olympus OM-D E-M1 Mark III', weight: 0.504 }
+            ],
+            'Lens': [
+                { name: '24-70mm f/2.8', weight: 0.8 },
+                { name: '70-200mm f/2.8', weight: 1.49 },
+                { name: '16-35mm f/4', weight: 0.518 },
+                { name: '50mm f/1.8', weight: 0.186 },
+                { name: '85mm f/1.4', weight: 0.625 },
+                { name: '100mm Macro', weight: 0.7 }
+            ],
+            'Tripod': [
+                { name: 'Carbon Fiber Travel Tripod', weight: 1.2 },
+                { name: 'Aluminum Tripod', weight: 1.8 },
+                { name: 'Mini Tripod', weight: 0.3 },
+                { name: 'Monopod', weight: 0.5 }
+            ],
+            'Lighting': [
+                { name: 'Speedlight Flash', weight: 0.35 },
+                { name: 'LED Panel (Small)', weight: 0.4 },
+                { name: 'LED Panel (Large)', weight: 1.2 },
+                { name: 'Softbox (24")', weight: 0.8 },
+                { name: 'Light Stand', weight: 1.5 }
+            ],
+            'Accessory': [
+                { name: 'Battery', weight: 0.08 },
+                { name: 'Memory Card Case', weight: 0.1 },
+                { name: 'Lens Cleaning Kit', weight: 0.15 },
+                { name: 'Remote Shutter', weight: 0.05 },
+                { name: 'Filter Set', weight: 0.2 }
+            ],
+            'Bag': [
+                { name: 'Small Camera Bag', weight: 0.8 },
+                { name: 'Medium Backpack', weight: 1.5 },
+                { name: 'Large Roller Case', weight: 3.5 },
+                { name: 'Sling Bag', weight: 0.6 }
+            ],
+            'Drone': [
+                { name: 'DJI Mavic Air 2', weight: 0.57 },
+                { name: 'DJI Phantom 4 Pro', weight: 1.388 },
+                { name: 'DJI Mini 2', weight: 0.242 }
+            ]
+        };
+
+        // DOM elements
+        const gearCategorySelect = document.getElementById('gear-category');
+        const gearItemSelect = document.getElementById('gear-item');
+        const customItemInput = document.getElementById('custom-item');
+        const itemWeightInput = document.getElementById('item-weight');
+        const itemQtyInput = document.getElementById('item-qty');
+        const addItemBtn = document.getElementById('add-item');
+        const gearItemsTable = document.getElementById('gear-items');
+        const totalWeightDisplay = document.getElementById('total-weight');
+        const toggleKgBtn = document.getElementById('toggle-kg');
+        const toggleLbBtn = document.getElementById('toggle-lb');
+
+        // State
+        let gearItems = [];
+        let useKg = true;
+
+        // Initialize
+        function init() {
+            loadFromLocalStorage();
+            updateTotalWeight();
+            renderGearList();
+            
+            // Event listeners
+            gearCategorySelect.addEventListener('change', updateGearItems);
+            addItemBtn.addEventListener('click', addGearItem);
+            toggleKgBtn.addEventListener('click', () => toggleUnit(true));
+            toggleLbBtn.addEventListener('click', () => toggleUnit(false));
+            
+            // Sortable table headers
+            document.querySelectorAll('th[data-sort]').forEach(th => {
+                th.addEventListener('click', () => sortGearList(th.dataset.sort));
+            });
+        }
+
+        // Update gear items dropdown based on category
+        function updateGearItems() {
+            const category = gearCategorySelect.value;
+            gearItemSelect.innerHTML = '<option value="">Select an item</option>';
+            
+            if (category && gearDatabase[category]) {
+                gearItemSelect.disabled = false;
+                
+                gearDatabase[category].forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item.name;
+                    option.textContent = item.name;
+                    option.dataset.weight = item.weight;
+                    gearItemSelect.appendChild(option);
+                });
+            } else {
+                gearItemSelect.disabled = true;
+            }
+        }
+
+        // Add gear item to the list
+        function addGearItem() {
+            const category = gearCategorySelect.value;
+            const item = gearItemSelect.value || customItemInput.value.trim();
+            let weight = parseFloat(itemWeightInput.value);
+            const qty = parseInt(itemQtyInput.value) || 1;
+            
+            // If selecting from dropdown, use predefined weight
+            if (gearItemSelect.value && gearItemSelect.selectedOptions[0].dataset.weight) {
+                weight = parseFloat(gearItemSelect.selectedOptions[0].dataset.weight);
+            }
+            
+            if (!item || isNaN(weight) || weight <= 0) {
+                alert('Please enter a valid item and weight');
+                return;
+            }
+            
+            const newItem = {
+                id: Date.now(),
+                category: category || 'Custom',
+                name: item,
+                weight: weight,
+                qty: qty
+            };
+            
+            gearItems.push(newItem);
+            saveToLocalStorage();
+            updateTotalWeight();
+            renderGearList();
+            
+            // Reset form
+            customItemInput.value = '';
+            itemWeightInput.value = '';
+            itemQtyInput.value = '1';
+        }
+
+        // Remove gear item from the list
+        function removeGearItem(id) {
+            gearItems = gearItems.filter(item => item.id !== id);
+            saveToLocalStorage();
+            updateTotalWeight();
+            renderGearList();
+        }
+
+        // Update total weight display
+        function updateTotalWeight() {
+            const total = gearItems.reduce((sum, item) => sum + (item.weight * item.qty), 0);
+            const displayTotal = useKg ? total : (total * 2.20462);
+            const unit = useKg ? 'kg' : 'lb';
+            
+            totalWeightDisplay.textContent = `Total: ${displayTotal.toFixed(2)} ${unit}`;
+        }
+
+        // Render gear list table
+        function renderGearList() {
+            if (gearItems.length === 0) {
+                gearItemsTable.innerHTML = '<tr class="empty-message"><td colspan="6">Your kit is empty. Add some gear to get started!</td></tr>';
+                return;
+            }
+            
+            gearItemsTable.innerHTML = '';
+            
+            gearItems.forEach(item => {
+                const row = document.createElement('tr');
+                
+                const displayWeight = useKg ? item.weight : (item.weight * 2.20462);
+                const displayTotal = useKg ? (item.weight * item.qty) : (item.weight * item.qty * 2.20462);
+                const unit = useKg ? 'kg' : 'lb';
+                
+                row.innerHTML = `
+                    <td>${item.name}</td>
+                    <td>${item.category}</td>
+                    <td>${displayWeight.toFixed(2)} ${unit}</td>
+                    <td>${item.qty}</td>
+                    <td>${displayTotal.toFixed(2)} ${unit}</td>
+                    <td><button class="btn-remove" data-id="${item.id}">Remove</button></td>
+                `;
+                
+                gearItemsTable.appendChild(row);
+            });
+            
+            // Add event listeners to remove buttons
+            document.querySelectorAll('.btn-remove').forEach(btn => {
+                btn.addEventListener('click', () => removeGearItem(parseInt(btn.dataset.id)));
+            });
+        }
+
+        // Toggle between kg and lb
+        function toggleUnit(useKilograms) {
+            useKg = useKilograms;
+            
+            if (useKg) {
+                toggleKgBtn.classList.add('active');
+                toggleLbBtn.classList.remove('active');
+            } else {
+                toggleKgBtn.classList.remove('active');
+                toggleLbBtn.classList.add('active');
